@@ -67,7 +67,7 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
     }
 
     .social a {
@@ -88,12 +88,36 @@
       box-shadow: 0 0 20px #00ffff;
     }
 
+    .music-toggle {
+      margin-bottom: 20px;
+    }
+
+    .music-toggle button {
+      padding: 8px 18px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #00ffff;
+      background: transparent;
+      border: 2px solid #00ffff;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ffff;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .music-toggle button:hover {
+      background-color: #00ffff;
+      color: black;
+      box-shadow: 0 0 20px #00ffff;
+    }
+
     .tagline {
-      margin-top: 20px;
+      margin-top: 0;
       font-style: italic;
       font-size: 1.1rem;
       color: #b3ffff;
       min-height: 24px;
+      margin-bottom: 10px;
     }
 
     #clock {
@@ -121,7 +145,12 @@
       color: #b3ffff;
     }
 
-    /* Trang trí anime logos */
+    .about img {
+      margin-top: 15px;
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #0ff;
+    }
 
     .anime-logo {
       position: fixed;
@@ -143,6 +172,14 @@
       filter: drop-shadow(0 0 12px #0ff);
       z-index: 15;
     }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #00ffffaa;
+      text-align: center;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
@@ -159,13 +196,21 @@
       <a href="https://gdvgura.vn" target="_blank">🌐CHECKSCAM GDVGURA.VN</a>
     </div>
 
+    <div class="music-toggle">
+      <button id="music-btn">Bật Nhạc 🎵</button>
+    </div>
+
     <p class="tagline" id="typewriter"></p>
     <p id="clock"></p>
 
     <div class="about">
       <h3>💬 Giới thiệu</h3>
       <p>📷 Nhận cosplay cute 💙 Cap wall xinh xẻo 💌 Support nhiệt tình – inbox thoải mái nhé!</p>
+      <img src="https://i.imgur.com/Age6Yov.gif" alt="Cosplay GIF">
+      <img src="https://i.imgur.com/SSp1jNx.png" alt="Cap Wall Image">
     </div>
+
+    <footer>© 2025 Chủ quyền Website By TRẦN HÀO | DARKSTACK TEAM</footer>
   </div>
 
   <!-- Anime logos -->
@@ -173,6 +218,10 @@
   <img src="https://i.imgur.com/432FfmY.jpeg" class="anime-logo" style="top: 30vh; right: 8vw;" alt="Anime 2" />
   <img src="https://i.imgur.com/KO8b7DV.jpeg" class="anime-logo" style="bottom: 20vh; left: 10vw;" alt="Anime 3" />
   <img src="https://i.imgur.com/vDe77TM.jpeg" class="anime-logo" style="bottom: 12vh; right: 12vw;" alt="Anime 4" />
+
+  <audio id="background-music" loop>
+    <source src="https://pomf2.lain.la/f/ya8ix3yd.mp3" type="audio/mpeg" />
+  </audio>
 
   <script>
     // Galaxy stars animation
@@ -253,6 +302,23 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
+
+    // Music toggle
+    const musicBtn = document.getElementById('music-btn');
+    const music = document.getElementById('background-music');
+    let isPlaying = false;
+
+    musicBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        music.pause();
+        musicBtn.textContent = 'Bật Nhạc 🎵';
+        isPlaying = false;
+      } else {
+        music.play();
+        musicBtn.textContent = 'Tắt Nhạc 🔇';
+        isPlaying = true;
+      }
+    });
   </script>
 </body>
 </html>
