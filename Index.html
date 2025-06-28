@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KH Linh | Profile</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: black;
+      overflow-x: hidden;
+      color: #fff;
+      position: relative;
+    }
+
+    canvas#galaxy {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .avatar {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 4px solid #00ffff;
+      box-shadow: 0 0 30px #00ffff;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .avatar:hover {
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      color: #aaa;
+      margin: 10px 0 30px;
+    }
+
+    .social {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .social a {
+      padding: 10px 20px;
+      background-color: transparent;
+      border: 2px solid #00ffff;
+      border-radius: 30px;
+      color: #00ffff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .social a:hover {
+      background-color: #00ffff;
+      color: black;
+      box-shadow: 0 0 20px #00ffff;
+    }
+
+    .tagline {
+      margin-top: 20px;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: #b3ffff;
+      min-height: 24px;
+    }
+
+    #clock {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+
+    .about {
+      max-width: 600px;
+      background: rgba(0, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #00ffff33;
+      margin-top: 30px;
+    }
+
+    .about h3 {
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+
+    .about p {
+      color: #b3ffff;
+    }
+
+    /* Trang trí anime logos */
+
+    .anime-logo {
+      position: fixed;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      filter: drop-shadow(0 0 6px cyan);
+      opacity: 0.7;
+      cursor: default;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 5;
+      user-select: none;
+    }
+
+    .anime-logo:hover {
+      transform: scale(1.3) rotate(5deg);
+      opacity: 1;
+      filter: drop-shadow(0 0 12px #0ff);
+      z-index: 15;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="galaxy"></canvas>
+
+  <div class="container">
+    <img class="avatar" src="https://i.imgur.com/FAegV7X.jpeg" alt="KH Linh Avatar">
+    <h1>KH Linh 🐟</h1>
+    <h2>✨ Chủ Shop Garucaythue | Admin GDVGURA.VN</h2>
+
+    <div class="social">
+      <a href="https://www.facebook.com/kh.linh.188917?locale=vi_VN" target="_blank">📘 Facebook</a>
+      <a href="https://garucaythue.shop" target="_blank">🛍️ Shop Roblox</a>
+      <a href="https://gdvgura.vn" target="_blank">🌐CHECKSCAM GDVGURA.VN</a>
+    </div>
+
+    <p class="tagline" id="typewriter"></p>
+    <p id="clock"></p>
+
+    <div class="about">
+      <h3>💬 Giới thiệu</h3>
+      <p>📷 Nhận cosplay cute 💙 Cap wall xinh xẻo 💌 Support nhiệt tình – inbox thoải mái nhé!</p>
+    </div>
+  </div>
+
+  <!-- Anime logos -->
+  <img src="https://i.imgur.com/PxuoP87.jpeg" class="anime-logo" style="top: 10vh; left: 5vw;" alt="Anime 1" />
+  <img src="https://i.imgur.com/432FfmY.jpeg" class="anime-logo" style="top: 30vh; right: 8vw;" alt="Anime 2" />
+  <img src="https://i.imgur.com/KO8b7DV.jpeg" class="anime-logo" style="bottom: 20vh; left: 10vw;" alt="Anime 3" />
+  <img src="https://i.imgur.com/vDe77TM.jpeg" class="anime-logo" style="bottom: 12vh; right: 12vw;" alt="Anime 4" />
+
+  <script>
+    // Galaxy stars animation
+    const canvas = document.getElementById('galaxy');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars(count) {
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.5,
+          velocity: Math.random() * 0.5 + 0.2
+        });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ffffff";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function animateStars() {
+      stars.forEach(star => {
+        star.y += star.velocity;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      drawStars();
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      createStars(150);
+    });
+
+    resizeCanvas();
+    createStars(150);
+    animateStars();
+
+    // Quotes
+    const quotes = [
+      "💖 Gấu cute nhận cosplay theo yêu cầu.",
+      "💫 Chuyên cap wall cho anh em tương tác thật!",
+      "💎 Shop uy tín – khách là bạn.",
+      "🧸 Hỏi gì cũng rep, khỏi ngại!"
+    ];
+    function rotateQuotes() {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById("typewriter").innerHTML = quote;
+    }
+    setInterval(rotateQuotes, 5000);
+    rotateQuotes();
+
+    // Clock
+    function updateClock() {
+      const nowUTC = new Date();
+      const vnTime = new Date(nowUTC.getTime() + 7 * 60 * 60 * 1000);
+      const hours = vnTime.getUTCHours().toString().padStart(2, '0');
+      const minutes = vnTime.getUTCMinutes().toString().padStart(2, '0');
+      const seconds = vnTime.getUTCSeconds().toString().padStart(2, '0');
+      document.getElementById("clock").innerHTML = `🕒 ${hours}:${minutes}:${seconds} (Giờ Việt Nam)`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
