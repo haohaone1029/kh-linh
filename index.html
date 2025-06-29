@@ -56,10 +56,21 @@
       margin: 0;
     }
 
-    h2 {
+    h2.shine-text {
       font-size: 1.2rem;
-      color: #aaa;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00ffff, #ffffff, #00ffff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 2s linear infinite;
+      text-shadow: 0 0 10px rgba(0,255,255,0.5);
       margin: 10px 0 30px;
+    }
+
+    @keyframes shine {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
     }
 
     .social {
@@ -102,13 +113,20 @@
       border-radius: 30px;
       cursor: pointer;
       box-shadow: 0 0 10px #00ffff;
-      transition: background-color 0.3s, color 0.3s;
+      transition: 0.3s;
     }
 
     .music-toggle button:hover {
       background-color: #00ffff;
       color: black;
       box-shadow: 0 0 20px #00ffff;
+    }
+
+    .music-toggle button.playing {
+      background-color: #00ffff;
+      color: black;
+      box-shadow: 0 0 25px #00ffff, 0 0 40px #00ffff;
+      transform: scale(1.05);
     }
 
     .tagline {
@@ -118,6 +136,14 @@
       color: #b3ffff;
       min-height: 24px;
       margin-bottom: 10px;
+    }
+
+    .glow-typewriter {
+      color: #00ffff;
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff;
+      border-right: .1em solid #0ff;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     #clock {
@@ -188,7 +214,7 @@
   <div class="container">
     <img class="avatar" src="https://i.imgur.com/FAegV7X.jpeg" alt="KH Linh Avatar">
     <h1>KH Linh 🐟</h1>
-    <h2>✨ Chủ Shop Garucaythue | CEO GDVGURA.VN</h2>
+    <h2 class="shine-text">✨ Chủ Shop Garucaythue | CEO GDVGURA.VN</h2>
 
     <div class="social">
       <a href="https://www.facebook.com/kh.linh.188917?locale=vi_VN" target="_blank">📘 Facebook</a>
@@ -200,7 +226,7 @@
       <button id="music-btn">Bật Nhạc 🎵</button>
     </div>
 
-    <p class="tagline" id="typewriter"></p>
+    <p class="tagline"><span id="typewriter" class="glow-typewriter"></span></p>
     <p id="clock"></p>
 
     <div class="about">
@@ -210,7 +236,7 @@
       <img src="https://i.imgur.com/SSp1jNx.png" alt="Cap Wall Image">
     </div>
 
-    <footer>© 2025 Chủ quyền Website By TRẦN HÀO | DARKSTACK TEAM</footer>
+    <footer>© 2025 Website By TRẦN HÀO | DARKSTACK TEAM</footer>
   </div>
 
   <!-- Anime logos -->
@@ -224,7 +250,7 @@
   </audio>
 
   <script>
-    // Galaxy stars animation
+    // Galaxy animation
     const canvas = document.getElementById('galaxy');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -277,19 +303,38 @@
     createStars(150);
     animateStars();
 
-    // Quotes
+    // Typewriter quotes
     const quotes = [
       "💖 Kh Linh cute nhận cosplay theo yêu cầu.",
       "💫 Chuyên cap wall cho anh em tương tác thật!",
       "💎 Shop uy tín – khách là bạn.",
       "🧸 Hỏi gì cũng rep, khỏi ngại!"
     ];
-    function rotateQuotes() {
-      const quote = quotes[Math.floor(Math.random() * quotes.length)];
-      document.getElementById("typewriter").innerHTML = quote;
+
+    let currentQuote = 0;
+    const typewriter = document.getElementById("typewriter");
+
+    function typeWriterEffect(text, index = 0) {
+      if (index === 0) {
+        typewriter.textContent = '';
+        typewriter.classList.remove("glow-typewriter");
+        void typewriter.offsetWidth;
+        typewriter.classList.add("glow-typewriter");
+      }
+
+      if (index < text.length) {
+        typewriter.textContent += text.charAt(index);
+        setTimeout(() => typeWriterEffect(text, index + 1), 60);
+      }
     }
-    setInterval(rotateQuotes, 5000);
-    rotateQuotes();
+
+    function showNextQuote() {
+      typeWriterEffect(quotes[currentQuote]);
+      currentQuote = (currentQuote + 1) % quotes.length;
+    }
+
+    showNextQuote();
+    setInterval(showNextQuote, 5000);
 
     // Clock
     function updateClock() {
@@ -312,10 +357,12 @@
       if (isPlaying) {
         music.pause();
         musicBtn.textContent = 'Bật Nhạc 🎵';
+        musicBtn.classList.remove('playing');
         isPlaying = false;
       } else {
         music.play();
         musicBtn.textContent = 'Tắt Nhạc 🔇';
+        musicBtn.classList.add('playing');
         isPlaying = true;
       }
     });
