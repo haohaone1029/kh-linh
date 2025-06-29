@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KH Linh | Profile</title>
   <style>
+    /* --- giữ nguyên phần CSS của bạn --- */
     body, html {
       margin: 0;
       padding: 0;
@@ -99,10 +100,6 @@
       box-shadow: 0 0 20px #00ffff;
     }
 
-    .music-toggle {
-      margin-bottom: 20px;
-    }
-
     .music-toggle button {
       padding: 8px 18px;
       font-weight: bold;
@@ -153,52 +150,6 @@
       text-shadow: 0 0 5px #0ff;
     }
 
-    .about {
-      max-width: 600px;
-      background: rgba(0, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid #00ffff33;
-      margin-top: 30px;
-    }
-
-    .about h3 {
-      color: #00ffff;
-      margin-bottom: 10px;
-    }
-
-    .about p {
-      color: #b3ffff;
-    }
-
-    .about img {
-      margin-top: 15px;
-      max-width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #0ff;
-    }
-
-    .anime-logo {
-      position: fixed;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      object-fit: cover;
-      filter: drop-shadow(0 0 6px cyan);
-      opacity: 0.7;
-      cursor: default;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      z-index: 5;
-      user-select: none;
-    }
-
-    .anime-logo:hover {
-      transform: scale(1.3) rotate(5deg);
-      opacity: 1;
-      filter: drop-shadow(0 0 12px #0ff);
-      z-index: 15;
-    }
-
     footer {
       margin-top: 30px;
       font-size: 0.9rem;
@@ -229,28 +180,15 @@
     <p class="tagline"><span id="typewriter" class="glow-typewriter"></span></p>
     <p id="clock"></p>
 
-    <div class="about">
-      <h3>💬 Giới thiệu</h3>
-      <p>📷 Nhận cosplay cute 💙 Cap wall xinh xẻo 💌 Support nhiệt tình – inbox thoải mái nhé!</p>
-      <img src="https://i.imgur.com/Age6Yov.gif" alt="Cosplay GIF">
-      <img src="https://i.imgur.com/SSp1jNx.png" alt="Cap Wall Image">
-    </div>
-
     <footer>© 2025 Website By TRẦN HÀO | DARKSTACK TEAM</footer>
   </div>
 
-  <!-- Anime logos -->
-  <img src="https://i.imgur.com/PxuoP87.jpeg" class="anime-logo" style="top: 10vh; left: 5vw;" alt="Anime 1" />
-  <img src="https://i.imgur.com/432FfmY.jpeg" class="anime-logo" style="top: 30vh; right: 8vw;" alt="Anime 2" />
-  <img src="https://i.imgur.com/KO8b7DV.jpeg" class="anime-logo" style="bottom: 20vh; left: 10vw;" alt="Anime 3" />
-  <img src="https://i.imgur.com/vDe77TM.jpeg" class="anime-logo" style="bottom: 12vh; right: 12vw;" alt="Anime 4" />
-
-  <audio id="background-music" loop>
-    <source src="https://pomf2.lain.la/f/ya8ix3yd.mp3" type="audio/mpeg" />
+  <audio id="background-music" loop preload="auto" muted>
+    <source src="https://cdn.pixabay.com/audio/2023/03/17/audio_b3d7ed7961.mp3" type="audio/mpeg">
+    Trình duyệt không hỗ trợ audio.
   </audio>
 
   <script>
-    // Galaxy animation
     const canvas = document.getElementById('galaxy');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -303,7 +241,7 @@
     createStars(150);
     animateStars();
 
-    // Typewriter quotes
+    // Quotes
     const quotes = [
       "💖 Kh Linh cute nhận cosplay theo yêu cầu.",
       "💫 Chuyên cap wall cho anh em tương tác thật!",
@@ -321,7 +259,6 @@
         void typewriter.offsetWidth;
         typewriter.classList.add("glow-typewriter");
       }
-
       if (index < text.length) {
         typewriter.textContent += text.charAt(index);
         setTimeout(() => typeWriterEffect(text, index + 1), 60);
@@ -338,32 +275,35 @@
 
     // Clock
     function updateClock() {
-      const nowUTC = new Date();
-      const vnTime = new Date(nowUTC.getTime() + 7 * 60 * 60 * 1000);
-      const hours = vnTime.getUTCHours().toString().padStart(2, '0');
-      const minutes = vnTime.getUTCMinutes().toString().padStart(2, '0');
-      const seconds = vnTime.getUTCSeconds().toString().padStart(2, '0');
-      document.getElementById("clock").innerHTML = `🕒 ${hours}:${minutes}:${seconds} (Giờ Việt Nam)`;
+      const now = new Date();
+      const h = now.getHours().toString().padStart(2, "0");
+      const m = now.getMinutes().toString().padStart(2, "0");
+      const s = now.getSeconds().toString().padStart(2, "0");
+      document.getElementById("clock").textContent = `🕒 ${h}:${m}:${s}`;
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Music toggle
-    const musicBtn = document.getElementById('music-btn');
-    const music = document.getElementById('background-music');
+    // Music
+    const music = document.getElementById("background-music");
+    const musicBtn = document.getElementById("music-btn");
     let isPlaying = false;
 
-    musicBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause();
-        musicBtn.textContent = 'Bật Nhạc 🎵';
-        musicBtn.classList.remove('playing');
-        isPlaying = false;
+    musicBtn.addEventListener("click", () => {
+      if (!isPlaying) {
+        music.muted = false;
+        music.play().then(() => {
+          isPlaying = true;
+          musicBtn.textContent = "Tắt Nhạc 🔇";
+          musicBtn.classList.add("playing");
+        }).catch(err => {
+          alert("⚠️ Trình duyệt cần bạn chạm vào màn hình hoặc tắt chế độ tiết kiệm pin để phát nhạc.");
+        });
       } else {
-        music.play();
-        musicBtn.textContent = 'Tắt Nhạc 🔇';
-        musicBtn.classList.add('playing');
-        isPlaying = true;
+        music.pause();
+        isPlaying = false;
+        musicBtn.textContent = "Bật Nhạc 🎵";
+        musicBtn.classList.remove("playing");
       }
     });
   </script>
